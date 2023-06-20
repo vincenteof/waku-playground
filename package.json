@@ -1,0 +1,13 @@
+{
+  "name": "waku-playground",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "turbo run build"
+  },
+  "author": "vincenteof",
+  "license": "ISC",
+  "dependencies": {
+    "turbo": "^1.10.3"
+  }
+}
