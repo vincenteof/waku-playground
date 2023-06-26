@@ -2,3 +2,6 @@ node_modules
 .turbo
 .DS_Store
 dist
+.env
+dev.db
+dev.db-journal
