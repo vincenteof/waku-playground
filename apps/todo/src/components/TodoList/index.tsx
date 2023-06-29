@@ -1,16 +1,12 @@
-"use client";
+import { queryAllTodo } from '../../actions/todo.js'
 
-import { useGlobalState } from "../Provider/index.js";
-
-type Props = {};
-
-export default function TodoList(props: Props) {
-  const { state } = useGlobalState();
+export default async function TodoList() {
+  const todoItems = await queryAllTodo()
   return (
     <div>
-      {state.todoItems.map((item) => (
+      {todoItems.map((item) => (
         <div key={item.id}>{item.content}</div>
       ))}
     </div>
-  );
+  )
 }

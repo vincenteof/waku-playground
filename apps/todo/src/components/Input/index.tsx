@@ -1,38 +1,36 @@
-"use client";
+'use client'
 
-import { KeyboardEventHandler, useCallback, useRef } from "react";
-import { useGlobalState } from "../Provider/index.js";
+import {  useRef } from 'react'
+import { mutate } from "waku/client";
 
-type Props = {};
+const ENTER = 'Enter'
 
-const ENTER = "Enter";
-
-export default function Input(props: Props) {
-  const { dispatch } = useGlobalState();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
-    (event) => {
-      if (event.key === ENTER) {
-        dispatch({
-          type: "ADD",
-          payload: {
-            content: inputRef.current?.value ?? "",
-          },
-        });
-        if (inputRef.current?.value) {
-          inputRef.current.value = "";
-        }
-      }
-    },
-    []
-  );
-
+export default function Input(props: {
+  createTodo: (content: string) => Promise<any>
+}) {
+  const { createTodo } = props
+  const inputRef = useRef<HTMLInputElement>(null)
   return (
     <input
       className="w-full"
       placeholder="What needs to be done?"
-      onKeyDown={handleKeyDown}
+      onKeyDown={(event) => {
+        const key = event.key
+        mutate(async () => {
+          if (key === ENTER) {
+            const content = inputRef.current?.value ?? ''
+            if (inputRef.current?.value) {
+              inputRef.current.value = ''
+            }
+            try {
+              await createTodo(content)
+            } catch (err) {
+              console.log(err)
+            }
+          } 
+        })
+      }}
       ref={inputRef}
     />
-  );
+  )
 }
